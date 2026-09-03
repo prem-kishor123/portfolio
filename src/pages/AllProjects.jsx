@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { profile } from "../data/portfolio.js";
-import { Reveal, WorkCard } from "../components/shared.jsx";
+import { Reveal, WorkCard, ApiPing } from "../components/shared.jsx";
 
 export default function AllProjects() {
   return (
@@ -9,6 +9,7 @@ export default function AllProjects() {
         <Link to="/" className="btn-line sm">← Back home</Link>
         <h1>All <mark>projects</mark> <span className="mono">({profile.projects.length})</span></h1>
         <p className="contact-sub">Everything shipped so far — more cooking.</p>
+        <ApiPing method="GET" endpoint="/api/projects?all=true" />
       </div>
       <div className="work-list">
         {profile.projects.map(function (p, i) {

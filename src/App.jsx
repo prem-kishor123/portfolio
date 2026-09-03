@@ -1,7 +1,8 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { HashRouter, Routes, Route, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { profile } from "./data/portfolio.js";
-import { Reveal, SecHead, WorkCard } from "./components/shared.jsx";
+import { Reveal, SecHead, WorkCard, ApiPing } from "./components/shared.jsx";
+import ApiMonitor from "./components/ApiMonitor.jsx";
 
 const AllProjects = lazy(function () { return import("./pages/AllProjects.jsx"); });
 import "./index.css";
@@ -375,7 +376,8 @@ function Projects() {
   const list = showAll ? profile.projects.slice(0, 2) : profile.projects;
   return (
     <section id="work" className="section">
-      <SecHead no="01" file="work.ts" title={<>Work that <mark>ships</mark></>} />
+      <SecHead no="01" file="work.ts" method="GET" endpoint="/api/projects" title={<>Work that <mark>ships</mark></>} />
+      <ApiPing method="GET" endpoint="/api/projects" />
       <div className="work-list">
         {list.map(function (p, i) {
           return (
@@ -397,7 +399,8 @@ function Projects() {
 function Services() {
   return (
     <section id="services" className="section">
-      <SecHead no="02" file="services.js" title={<>What I <mark>can do</mark> for you</>} />
+      <SecHead no="02" file="services.js" method="GET" endpoint="/api/services" title={<>What I <mark>can do</mark> for you</>} />
+      <ApiPing method="GET" endpoint="/api/services" />
       <div className="services-grid">
         {profile.services.map(function (s, i) {
           return (
@@ -419,7 +422,8 @@ function Services() {
 function About() {
   return (
     <section id="about" className="section">
-      <SecHead no="03" file="about.md" title={<>A developer, <mark>not a template</mark></>} />
+      <SecHead no="03" file="about.md" method="GET" endpoint="/api/profile" title={<>A developer, <mark>not a template</mark></>} />
+      <ApiPing method="GET" endpoint="/api/profile" />
       <Reveal>
         <div className="about-card">
           <p className="about-lead">{profile.about.heading}</p>
@@ -451,7 +455,8 @@ function About() {
 function Skills() {
   return (
     <section id="skills" className="section">
-      <SecHead no="04" file="stack.json" title={<>The <mark>source code</mark> of my stack</>} />
+      <SecHead no="04" file="stack.json" method="GET" endpoint="/api/stack" title={<>The <mark>source code</mark> of my stack</>} />
+      <ApiPing method="GET" endpoint="/api/stack" />
       <Reveal>
         <div className="code-card">
           <div className="code-head"><span className="dot r" /><span className="dot y" /><span className="dot g" /><span className="mono">stack.json — read-only (edit in portfolio.js)</span><span className="mono code-lang">JSON</span></div>
@@ -489,7 +494,8 @@ function Learning() {
   const C = 2 * Math.PI * 34;
   return (
     <section id="learning" className="section">
-      <SecHead no="05" file="learning.log" title={<>Loading <mark>new skills…</mark></>} />
+      <SecHead no="05" file="learning.log" method="GET" endpoint="/api/learning" title={<>Loading <mark>new skills…</mark></>} />
+      <ApiPing method="GET" endpoint="/api/learning" />
       <div className="learn-grid">
         {profile.currentlyLearning.map(function (l, i) {
           const off = (C * (1 - l.pct / 100)).toFixed(1);
@@ -518,7 +524,8 @@ function Learning() {
 function Education() {
   return (
     <section id="education" className="section">
-      <SecHead no="06" file="edu.log" title={<>The <mark>paper trail</mark></>} />
+      <SecHead no="06" file="edu.log" method="GET" endpoint="/api/education" title={<>The <mark>paper trail</mark></>} />
+      <ApiPing method="GET" endpoint="/api/education" />
       <div className="timeline">
         {profile.education.map(function (e) {
           return (
@@ -554,7 +561,8 @@ function Education() {
 function Hobbies() {
   return (
     <section id="hobbies" className="section">
-      <SecHead no="07" file="fun.txt" title={<>Beyond <mark>the code</mark></>} />
+      <SecHead no="07" file="fun.txt" method="GET" endpoint="/api/fun" title={<>Beyond <mark>the code</mark></>} />
+      <ApiPing method="GET" endpoint="/api/fun" />
       <div className="hobby-grid">
         {profile.hobbies.map(function (h, i) {
           return (
@@ -582,7 +590,10 @@ function Contact() {
   return (
     <section id="contact" className="section contact">
       <Reveal>
-        <p className="mono contact-kicker">08 · ~/folio/hello.sh</p>
+        <p className="mono contact-kicker">08 · ~/folio/hello.sh
+          <span className="api-badge mono"><span className="api-dot" /><span className="api-method post">POST</span><span className="api-path">/api/contact</span><span className="api-status">200</span></span>
+        </p>
+        <ApiPing method="POST" endpoint="/api/contact" />
         <h2 className="contact-big">Have something to build? <a href={"mailto:" + profile.email}><mark>Let's talk.</mark></a></h2>
         <p className="contact-sub">{profile.contact.sub}</p>
         <div className="contact-row">
@@ -639,6 +650,7 @@ export default function App() {
           <Route path="/projects" element={<Suspense fallback={<main id="main"><div className="page-load mono">loading projects…</div></main>}><AllProjects /></Suspense>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <ApiMonitor />
         <Footer />
       </div>
     </HashRouter>

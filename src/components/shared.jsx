@@ -22,14 +22,43 @@ export function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-export function SecHead({ no, file, title }) {
+export function SecHead({ no, file, title, method, endpoint }) {
   return (
     <div className="sec-head">
       <span className="sec-no mono">{no}</span>
       <span className="sec-file mono">~/folio/{file}</span>
       <h2>{title}</h2>
+      {endpoint && (
+        <span className="api-badge mono" title="Live endpoint">
+          <span className="api-dot" />
+          <span className={"api-method " + (method || "GET").toLowerCase()}>{method || "GET"}</span>
+          <span className="api-path">{endpoint}</span>
+          <span className="api-status">200</span>
+        </span>
+      )}
     </div>
   );
+}
+
+/* Invisible sentinel: fires one api:call when its section scrolls into view */
+export function ApiPing({ method, endpoint }) {
+  const ref = useRef(null);
+  useEffect(function () {
+    const el = ref.current;
+    if (!el) return;
+    let fired = false;
+    const obs = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting && !fired) {
+        fired = true;
+        const ms = 18 + Math.round(Math.random() * 120);
+        window.dispatchEvent(new CustomEvent("api:call", { detail: { method: method || "GET", endpoint: endpoint, ms: ms } }));
+        obs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return function () { obs.disconnect(); };
+  }, [endpoint, method]);
+  return <span ref={ref} className="api-ping" aria-hidden="true" />;
 }
 
 export function WorkCard({ p }) {
