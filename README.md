@@ -1,16 +1,35 @@
-# React + Vite
+# Kishan Kumar — Portfolio (folio/OS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio site. An editor-chrome themed single-page app + a `/projects` archive page.
 
-Currently, two official plugins are available:
+## Run it
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```powershell
+npm install
+npm run dev
+```
 
-## React Compiler
+Build for production:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```powershell
+npm run build
+npm run preview
+```
 
-## Expanding the Oxlint configuration
+## Edit content — one file
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Everything (name, links, projects, skills, learning, hobbies) lives in
+`src/data/portfolio.js`. No other code needs touching for content updates.
+
+Still TODO (needs real URLs):
+
+- `resumeLink` — paste resume Drive link
+- Each project's `LIVE` / `CODE` urls (currently `"#"`)
+- Absolute domain for `og:image` in `index.html` once deployed
+
+## Structure
+
+- `src/App.jsx` — shell, navbar, hero, home sections, footer
+- `src/components/shared.jsx` — Reveal, SecHead, WorkCard (shared with lazy page)
+- `src/pages/AllProjects.jsx` — lazy-loaded `/projects` archive
+- `src/data/portfolio.js` — all content

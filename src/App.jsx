@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { HashRouter, Routes, Route, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { profile } from "./data/portfolio.js";
+import { Reveal, SecHead, WorkCard } from "./components/shared.jsx";
+
+const AllProjects = lazy(function () { return import("./pages/AllProjects.jsx"); });
 import "./index.css";
 
 /* ================= BOOT LOADER ================= */
@@ -79,26 +82,6 @@ function useTheme() {
     setTheme(function (t) { return t === "light" ? "dark" : "light"; });
   }
   return [theme, toggleTheme];
-}
-
-function Reveal({ children, delay = 0, className = "" }) {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      function (entries) { if (entries[0].isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold: 0.08 }
-    );
-    obs.observe(el);
-    return function () { obs.disconnect(); };
-  }, []);
-  return (
-    <div ref={ref} className={"reveal" + (inView ? " in" : "") + " " + className} style={{ transitionDelay: delay + "ms" }}>
-      {children}
-    </div>
-  );
 }
 
 function Counter({ value }) {
@@ -227,8 +210,7 @@ function ScrollBar() {
 /* ================= HEADER ================= */
 /* FIX: ids must match real <section id="..."> values.
    Old "stack"/"journey" matched nothing, so those tabs never scrolled. */
-const TABS = [["work", "work.ts"], ["about", "about.md"], ["skills", "stack.json"], ["education", "edu.log"], ["contact", "hello.sh"]];
-const EXTRA_TABS = [["services", "services.js"], ["learning", "learning.log"], ["hobbies", "fun.txt"]];
+const TABS = [["work", "work.ts"], ["services", "services.js"], ["about", "about.md"], ["skills", "stack.json"], ["learning", "learning.log"], ["education", "edu.log"], ["hobbies", "fun.txt"], ["contact", "hello.sh"]];
 
 function Navbar({ theme, toggleTheme }) {
   const [open, setOpen] = useState(false);
@@ -236,7 +218,7 @@ function Navbar({ theme, toggleTheme }) {
   const clock = useClock();
   const go = useGo();
   const loc = useLocation();
-  const active = useActiveSection(["work", "about", "skills", "education", "contact"]);
+  const active = useActiveSection(["work", "services", "about", "skills", "learning", "education", "hobbies", "contact"]);
 
   useEffect(() => {
     function onScroll() { setScrolled(window.scrollY > 24); }
@@ -247,6 +229,23 @@ function Navbar({ theme, toggleTheme }) {
 
   function close() { setOpen(false); }
   function pick(id) { close(); go(id); }
+  const palRef = useRef(null);
+
+  useEffect(function () {
+    if (!open) return;
+    function onKey(e) {
+      if (e.key === "Escape") { close(); return; }
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+      const rows = palRef.current ? Array.prototype.slice.call(palRef.current.querySelectorAll(".palette-row")) : [];
+      if (!rows.length) return;
+      e.preventDefault();
+      const i = rows.indexOf(document.activeElement);
+      const n = e.key === "ArrowDown" ? (i + 1) % rows.length : (i - 1 + rows.length) % rows.length;
+      rows[n].focus();
+    }
+    document.addEventListener("keydown", onKey);
+    return function () { document.removeEventListener("keydown", onKey); };
+  }, [open]);
 
   return (
     <header className={"chrome" + (scrolled ? " scrolled" : "")}>
@@ -278,9 +277,9 @@ function Navbar({ theme, toggleTheme }) {
         </div>
       </div>
       {open && (
-        <nav className="palette">
+        <nav className="palette" ref={palRef}>
           <div className="mono palette-hint">TYPE A COMMAND… JUST KIDDING — PICK A SECTION</div>
-          {TABS.concat(EXTRA_TABS).map(function (t) {
+          {TABS.map(function (t) {
             return <button key={t[0]} onClick={function () { pick(t[0]); }} className="palette-row"><span className="mono">→</span> {t[1]}</button>;
           })}
           <button onClick={toggleTheme} className="palette-row"><span className="mono">→</span> toggle-{theme === "light" ? "dark" : "light"}-mode</button>
@@ -370,42 +369,6 @@ function Strip() {
 }
 
 /* ================= SHARED BITS ================= */
-function SecHead({ no, file, title }) {
-  return (
-    <div className="sec-head">
-      <span className="sec-no mono">{no}</span>
-      <span className="sec-file mono">~/folio/{file}</span>
-      <h2>{title}</h2>
-    </div>
-  );
-}
-
-function WorkCard({ p }) {
-  return (
-    <article className="work">
-      <a className="work-cover" href={(p.links[0] && p.links[0].url) || "#"} target="_blank" rel="noreferrer" aria-label={p.title}>
-        <span className="work-ghost">{p.id}</span>
-        <span className="work-badge mono">{p.featured ? "★ FEATURED" : "PROJECT"}</span>
-        <span className="work-go">↗</span>
-      </a>
-      <div className="work-body">
-        <span className="mono work-idx">[{p.id}]</span>
-        <h3>{p.title}</h3>
-        <p>{p.description}</p>
-        <ul>
-          {p.bullets.map(function (b) { return <li key={b}>{b}</li>; })}
-        </ul>
-        <div className="mono work-stack">{p.stack.join(" · ")}</div>
-        <div className="work-links">
-          {p.links.map(function (l) {
-            return <a key={l.label} href={l.url} target="_blank" rel="noreferrer" className="btn-line sm">{l.label}</a>;
-          })}
-        </div>
-      </div>
-    </article>
-  );
-}
-
 /* ================= HOME SECTIONS ================= */
 function Projects() {
   const showAll = profile.projects.length > 2;
@@ -467,6 +430,17 @@ function About() {
             {profile.socials.map(function (s) {
               return <a key={s.label} href={s.url} target="_blank" rel="noreferrer" className="soc mono">{s.label} ↗</a>;
             })}
+          </div>
+          <div className="proof">
+            <span className="mono proof-label">DON'T TAKE MY WORD FOR IT —</span>
+            <div className="proof-cards">
+              {["LEETCODE", "GITHUB", "LINKEDIN"].map(function (label) {
+                const s = profile.socials.find(function (x) { return x.label === label; });
+                if (!s) return null;
+                const hint = label === "LEETCODE" ? "600+ solved · 1650+ rating — live" : label === "GITHUB" ? "repos & contributions — live" : "posts & experience — live";
+                return <a key={label} href={s.url} target="_blank" rel="noreferrer" className="proof-card"><strong className="mono">{label} ↗</strong><span>{hint}</span></a>;
+              })}
+            </div>
           </div>
         </div>
       </Reveal>
@@ -624,7 +598,7 @@ function Contact() {
 /* ================= PAGES ================= */
 function Home() {
   return (
-    <main>
+    <main id="main">
       <Hero />
       <Strip />
       <Projects />
@@ -635,27 +609,6 @@ function Home() {
       <Education />
       <Hobbies />
       <Contact />
-    </main>
-  );
-}
-
-function AllProjects() {
-  return (
-    <main className="projects-page">
-      <div className="page-head">
-        <Link to="/" className="btn-line sm">← Back home</Link>
-        <h1>All <mark>projects</mark> <span className="mono">({profile.projects.length})</span></h1>
-        <p className="contact-sub">Everything shipped so far — more cooking.</p>
-      </div>
-      <div className="work-list">
-        {profile.projects.map(function (p, i) {
-          return (
-            <Reveal key={p.id} delay={i * 60}>
-              <WorkCard p={p} />
-            </Reveal>
-          );
-        })}
-      </div>
     </main>
   );
 }
@@ -677,12 +630,13 @@ export default function App() {
   return (
     <HashRouter>
       <div className={"page" + (loading ? " is-loading" : " is-ready") + " theme-" + theme}>
+        <button className="skip mono" onClick={function () { const el = document.getElementById("main"); if (el) el.scrollIntoView(); }}>Skip to content ↓</button>
         {loading && <Loader onDone={function () { setLoading(false); }} />}
         <ScrollToTop />
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<AllProjects />} />
+          <Route path="/projects" element={<Suspense fallback={<main id="main"><div className="page-load mono">loading projects…</div></main>}><AllProjects /></Suspense>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />
