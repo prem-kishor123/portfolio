@@ -90,8 +90,8 @@ export const profile = {
         "Secure image uploads via Multer + ImageKit",
       ],
       links: [
-        { label: "LIVE ↗", url: "#" },
-        { label: "CODE ↗", url: "#" },
+        { label: "LIVE ↗", url: "https://loomboard.codewithkishanx.co.in/" },
+        { label: "CODE ↗", url: "https://github.com/codewithkishanx/STMP-FRONTEND" },
       ],
       color: "#00E676",
       featured: true,
