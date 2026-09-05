@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { HashRouter, Routes, Route, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { profile } from "./data/portfolio.js";
 import { Reveal, SecHead, WorkCard, ApiPing } from "./components/shared.jsx";
 import ApiMonitor from "./components/ApiMonitor.jsx";
@@ -168,16 +168,40 @@ function ScrollToTop() {
   return null;
 }
 
+/* Per-route SEO: keeps title + meta description unique for Google */
+function usePageMeta(title, description, canonical) {
+  useEffect(function () {
+    if (title) document.title = title;
+    if (description) {
+      let tag = document.querySelector('meta[name="description"]');
+      if (tag) tag.setAttribute("content", description);
+    }
+    if (canonical) {
+      let link = document.querySelector('link[rel="canonical"]');
+      if (link) link.setAttribute("href", canonical);
+    }
+  }, [title, description, canonical]);
+}
+
 /* Scrollspy: returns id of section currently in view */
 function useActiveSection(ids) {
   const [active, setActive] = useState("");
   const loc = useLocation();
   useEffect(function () {
     if (loc.pathname !== "/") return;
+    let raf = 0;
+    let pending = null;
     const obs = new IntersectionObserver(
       function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) setActive(e.target.id);
+        const visible = entries.filter(function (e) { return e.isIntersecting; });
+        if (!visible.length) return;
+        // Pick the last visible entry to keep bottom sections (hobbies/contact) stable
+        pending = visible[visible.length - 1].target.id;
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          if (pending) setActive(function (prev) { return prev === pending ? prev : pending; });
+          pending = null;
         });
       },
       { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
@@ -186,7 +210,7 @@ function useActiveSection(ids) {
       const el = document.getElementById(id);
       if (el) obs.observe(el);
     });
-    return function () { obs.disconnect(); };
+    return function () { obs.disconnect(); if (raf) cancelAnimationFrame(raf); };
   }, [loc.pathname]);
   return active;
 }
@@ -195,15 +219,24 @@ function useActiveSection(ids) {
 function ScrollBar() {
   const ref = useRef(null);
   useEffect(() => {
-    function onScroll() {
+    let raf = 0;
+    let last = -1;
+    function render() {
+      raf = 0;
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
-      const p = max > 0 ? h.scrollTop / max : 0;
+      const p = max > 0 ? Math.min(1, Math.max(0, h.scrollTop / max)) : 0;
+      if (Math.abs(p - last) < 0.001) return;
+      last = p;
       if (ref.current) ref.current.style.transform = "scaleX(" + p + ")";
     }
-    onScroll();
+    function onScroll() {
+      if (raf) return;
+      raf = requestAnimationFrame(render);
+    }
+    render();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return function () { window.removeEventListener("scroll", onScroll); };
+    return function () { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
   }, []);
   return <div className="scrollbar"><div ref={ref} /></div>;
 }
@@ -608,6 +641,11 @@ function Contact() {
 
 /* ================= PAGES ================= */
 function Home() {
+  usePageMeta(
+    "Kishan Kumar — Software Developer",
+    "Kishan Kumar — full-stack software developer building React, Node.js and AI-integrated apps. 600+ DSA problems solved. Open to internships, freelance and collabs.",
+    "https://www.codewithkishanx.co.in/"
+  );
   return (
     <main id="main">
       <Hero />
@@ -639,7 +677,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [theme, toggleTheme] = useTheme();
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className={"page" + (loading ? " is-loading" : " is-ready") + " theme-" + theme}>
         <button className="skip mono" onClick={function () { const el = document.getElementById("main"); if (el) el.scrollIntoView(); }}>Skip to content ↓</button>
         {loading && <Loader onDone={function () { setLoading(false); }} />}
@@ -653,6 +691,6 @@ export default function App() {
         <ApiMonitor />
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }

@@ -114,6 +114,23 @@ export const profile = {
       color: "#FF2E9A",
       featured: false,
     },
+    {
+      id: "04",
+      title: "Atmos — Live Weather Dashboard",
+      stack: ["JavaScript", "Tailwind CSS", "Open-Meteo API", "Geolocation", "Charts"],
+      description:
+        "Premium weather intelligence with live radar, geolocation auto-detect, dynamic condition backgrounds & 24-hr charts.",
+      bullets: [
+        "3-day forecast + 24-hr temp / precip / wind via Open-Meteo",
+        "Dynamic highlights: sunrise, sunset, UV risk, AQI & visibility",
+        "Geolocation auto-detect with fallback + weather-based gradients",
+      ],
+      links: [
+        { label: "LIVE ↗", url: "https://weather.codewithkishanx.co.in/" },
+      ],
+      color: "#00D0FF",
+      featured: false,
+    },
   ],
 
   education: [

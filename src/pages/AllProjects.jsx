@@ -1,8 +1,16 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { profile } from "../data/portfolio.js";
 import { Reveal, WorkCard, ApiPing } from "../components/shared.jsx";
 
 export default function AllProjects() {
+  useEffect(function () {
+    document.title = "All Projects — Kishan Kumar";
+    const tag = document.querySelector('meta[name="description"]');
+    if (tag) tag.setAttribute("content", "All projects by Kishan Kumar — React, Node.js, AI-integrated apps, DSA visualizers and live demos.");
+    const link = document.querySelector('link[rel="canonical"]');
+    if (link) link.setAttribute("href", "https://www.codewithkishanx.co.in/projects");
+  }, []);
   return (
     <main id="main" className="projects-page">
       <div className="page-head">

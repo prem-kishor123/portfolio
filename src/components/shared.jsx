@@ -16,7 +16,7 @@ export function Reveal({ children, delay = 0, className = "" }) {
     return function () { obs.disconnect(); };
   }, []);
   return (
-    <div ref={ref} className={"reveal" + (inView ? " in" : "") + " " + className} style={{ transitionDelay: delay + "ms" }}>
+    <div ref={ref} className={"reveal" + (inView ? " in" : "") + " " + className} style={{ transitionDelay: inView ? "0ms" : delay + "ms" }}>
       {children}
     </div>
   );
@@ -62,13 +62,22 @@ export function ApiPing({ method, endpoint }) {
 }
 
 export function WorkCard({ p }) {
+  const validLinks = (p.links || []).filter(function (l) { return l.url && l.url !== "#"; });
+  const coverHref = (validLinks[0] && validLinks[0].url) || null;
   return (
     <article className="work">
-      <a className="work-cover" href={(p.links[0] && p.links[0].url) || "#"} target="_blank" rel="noreferrer" aria-label={p.title}>
-        <span className="work-ghost">{p.id}</span>
-        <span className="work-badge mono">{p.featured ? "★ FEATURED" : "PROJECT"}</span>
-        <span className="work-go">↗</span>
-      </a>
+      {coverHref ? (
+        <a className="work-cover" href={coverHref} target="_blank" rel="noreferrer" aria-label={p.title}>
+          <span className="work-ghost">{p.id}</span>
+          <span className="work-badge mono">{p.featured ? "★ FEATURED" : "PROJECT"}</span>
+          <span className="work-go">↗</span>
+        </a>
+      ) : (
+        <div className="work-cover" aria-label={p.title}>
+          <span className="work-ghost">{p.id}</span>
+          <span className="work-badge mono">{p.featured ? "★ FEATURED" : "PROJECT"}</span>
+        </div>
+      )}
       <div className="work-body">
         <span className="mono work-idx">[{p.id}]</span>
         <h3>{p.title}</h3>
@@ -77,11 +86,13 @@ export function WorkCard({ p }) {
           {p.bullets.map(function (b) { return <li key={b}>{b}</li>; })}
         </ul>
         <div className="mono work-stack">{p.stack.join(" · ")}</div>
-        <div className="work-links">
-          {p.links.map(function (l) {
-            return <a key={l.label} href={l.url} target="_blank" rel="noreferrer" className="btn-line sm">{l.label}</a>;
-          })}
-        </div>
+        {validLinks.length > 0 && (
+          <div className="work-links">
+            {validLinks.map(function (l) {
+              return <a key={l.label} href={l.url} target="_blank" rel="noreferrer" className="btn-line sm">{l.label}</a>;
+            })}
+          </div>
+        )}
       </div>
     </article>
   );
