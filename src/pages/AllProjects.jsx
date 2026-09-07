@@ -5,11 +5,11 @@ import { Reveal, WorkCard, ApiPing } from "../components/shared.jsx";
 
 export default function AllProjects() {
   useEffect(function () {
-    document.title = "All Projects — Kishan Kumar";
+    document.title = "All Projects — Prem Kishor";
     const tag = document.querySelector('meta[name="description"]');
-    if (tag) tag.setAttribute("content", "All projects by Kishan Kumar — React, Node.js, AI-integrated apps, DSA visualizers and live demos.");
+    if (tag) tag.setAttribute("content", "All projects by Prem Kishor — React, Node.js, AI-integrated apps and live demos.");
     const link = document.querySelector('link[rel="canonical"]');
-    if (link) link.setAttribute("href", "https://www.codewithkishanx.co.in/projects");
+    if (link) link.setAttribute("href", "https://github.com/prem-kishor123");
   }, []);
   return (
     <main id="main" className="projects-page">

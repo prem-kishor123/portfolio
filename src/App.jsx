@@ -41,7 +41,7 @@ function Loader({ onDone }) {
   return (
     <div className={"loader" + (leave ? " leave" : "")} aria-hidden="true">
       <div className="loader-box">
-        <div className="loader-head"><span className="dot r" /><span className="dot y" /><span className="dot g" /><span className="mono">kishan@dev — zsh</span></div>
+        <div className="loader-head"><span className="dot r" /><span className="dot y" /><span className="dot g" /><span className="mono">prem@dev — zsh</span></div>
         <div className="mono loader-body">
           <div><span className="p">$</span> boot portfolio --prod</div>
           <div className="dim">[{blocks}] {n}%</div>
@@ -286,8 +286,8 @@ function Navbar({ theme, toggleTheme }) {
       <ScrollBar />
       <div className="chrome-bar">
         <Link to="/" className="brand-link" aria-label="home" onClick={function () { close(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          <span className="logo-mark mono">K</span>
-          <span className="brand mono">kishan.dev<span className="blink-caret">_</span></span>
+          <span className="logo-mark mono">P</span>
+          <span className="brand mono">prem.dev<span className="blink-caret">_</span></span>
         </Link>
         <nav className="tabs">
           {TABS.map(function (t, i) {
@@ -326,8 +326,8 @@ function Navbar({ theme, toggleTheme }) {
 
 /* ================= HERO ================= */
 const TERM_LINES = [
-  { c: "whoami", o: "kishan kumar — full-stack developer" },
-  { c: "cat focus.txt", o: "react · node · apis · dsa (600+ solved)" },
+  { c: "whoami", o: "prem kishor — full-stack developer" },
+  { c: "cat focus.txt", o: "react · node · apis · dsa (200+ solved)" },
   { c: "open --hire", o: "status: available ✓" },
 ];
 
@@ -363,7 +363,7 @@ function Hero() {
         </div>
         <div className="hero-right">
           <div className="term">
-            <div className="term-head"><span className="dot r" /><span className="dot y" /><span className="dot g" /><span className="mono">kishan@dev: ~/folio</span></div>
+            <div className="term-head"><span className="dot r" /><span className="dot y" /><span className="dot g" /><span className="mono">prem@dev: ~/folio</span></div>
             <div className="term-body mono">
               {TERM_LINES.map(function (l, i) {
                 return (
@@ -474,7 +474,7 @@ function About() {
               {["LEETCODE", "GITHUB", "LINKEDIN"].map(function (label) {
                 const s = profile.socials.find(function (x) { return x.label === label; });
                 if (!s) return null;
-                const hint = label === "LEETCODE" ? "600+ solved · 1650+ rating — live" : label === "GITHUB" ? "repos & contributions — live" : "posts & experience — live";
+                const hint = label === "LEETCODE" ? "200+ solved — live" : label === "GITHUB" ? "repos & contributions — live" : "posts & experience — live";
                 return <a key={label} href={s.url} target="_blank" rel="noreferrer" className="proof-card"><strong className="mono">{label} ↗</strong><span>{hint}</span></a>;
               })}
             </div>
@@ -642,9 +642,9 @@ function Contact() {
 /* ================= PAGES ================= */
 function Home() {
   usePageMeta(
-    "Kishan Kumar — Software Developer",
-    "Kishan Kumar — full-stack software developer building React, Node.js and AI-integrated apps. 600+ DSA problems solved. Open to internships, freelance and collabs.",
-    "https://www.codewithkishanx.co.in/"
+    "Prem Kishor — Software Developer",
+    "Prem Kishor — full-stack software developer building React, Node.js and AI-integrated apps. 200+ DSA problems solved. Open to internships, freelance and collabs.",
+    "https://github.com/prem-kishor123"
   );
   return (
     <main id="main">
@@ -666,8 +666,8 @@ function Footer() {
   const go = useGo();
   return (
     <footer className="footer mono">
-      <span>© 2026 Kishan Kumar</span>
-      <span className="hide-m">made by kishan with love ♥</span>
+      <span>© 2026 Prem Kishor</span>
+      <span className="hide-m">made by prem with love ♥</span>
       <button className="to-top mono" onClick={function () { go("top"); }}>back to top ↑</button>
     </footer>
   );

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.codewithkishanx.co.in/sitemap.xml
+Sitemap: https://github.com/prem-kishor123/sitemap.xml

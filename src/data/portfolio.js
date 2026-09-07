@@ -5,22 +5,22 @@
 // ============================================================
 
 export const profile = {
-  name: "KISHAN KUMAR",
-  firstName: "KISHAN",
-  lastName: "KUMAR",
+  name: "PREM KISHOR",
+  firstName: "PREM",
+  lastName: "KISHOR",
   roles: ["SOFTWARE DEVELOPER", "FULL-STACK", "API DEVELOPMENT"],
   tagline:
-    "MCA student ('27) building full-stack & AI-integrated apps. 600+ DSA problems solved. I ship scalable SaaS.",
+    "MCA student ('27) building full-stack & AI-integrated apps. 200+ DSA problems solved. I ship scalable SaaS.",
   location: "India",
-  phone: "+91 94733 93799",
-  email: "codewithkishanxyz@gmail.com",
+  phone: "+91 6299082449",
+  email: "premkishor131@gmail.com",
   resumeLink: "#", // <-- paste your resume Google Drive link here
 
   socials: [
-    { label: "GITHUB", handle: "codewithkishanx", url: "https://github.com/codewithkishanx" },
-    { label: "LINKEDIN", handle: "codewithkishanx", url: "https://linkedin.com/in/codewithkishanx" },
-    { label: "LEETCODE", handle: "codewithkishanx", url: "https://leetcode.com/codewithkishanx" },
-    { label: "EMAIL", handle: "codewithkishanxyz@gmail.com", url: "mailto:codewithkishanxyz@gmail.com" },
+    { label: "GITHUB", handle: "prem-kishor123", url: "https://github.com/prem-kishor123" },
+    { label: "LINKEDIN", handle: "premkishor131", url: "https://linkedin.com/in/premkishor131" },
+    { label: "LEETCODE", handle: "PREM2604", url: "https://leetcode.com/PREM2604" },
+    { label: "EMAIL", handle: "premkishor131@gmail.com", url: "mailto:premkishor131@gmail.com" },
   ],
 
   // Ticker that scrolls across the top
@@ -32,8 +32,8 @@ export const profile = {
     "TYPESCRIPT",
     "NEXT.JS",
     "POSTGRESQL",
-    "DOCKER",
-    "600+ LEETCODE",
+    "POSTMAN",
+    "200+ LEETCODE",
     "OPEN TO WORK",
   ],
 
@@ -44,10 +44,10 @@ export const profile = {
       "Strong foundation in Data Structures & Algorithms. Proficient in Java, JavaScript and Python, focused on scalable SaaS and solving complex engineering problems.",
     ],
     stats: [
-      { value: "600+", label: "DSA PROBLEMS" },
-      { value: "1650+", label: "LEETCODE RATING" },
-      { value: "TOP 15%", label: "GLOBAL RANK" },
+      { value: "200+", label: "DSA PROBLEMS" },
       { value: "2+", label: "FULL-STACK APPS" },
+      { value: "10+", label: "REST APIS BUILT" },
+      { value: "8+", label: "TECH STACK" },
     ],
   },
 
@@ -56,7 +56,7 @@ export const profile = {
     { category: "FRONTEND", items: ["React", "Next.js", "HTML", "CSS"], color: "#FF6B00" },
     { category: "BACKEND", items: ["Node.js", "Express.js", "REST APIs", "FastAPI"], color: "#00E676" },
     { category: "DB & CLOUD", items: ["PostgreSQL", "MongoDB", "Firebase", "Vercel"], color: "#00D0FF" },
-    { category: "TOOLS", items: ["Git", "GitHub", "Docker", "Jira", "Postman", "Figma", "VS Code"], color: "#FF2E9A" },
+    { category: "TOOLS", items: ["Git", "GitHub", "Postman", "VS Code"], color: "#FF2E9A" },
   ],
 
   projects: [
@@ -90,70 +90,34 @@ export const profile = {
         "Secure image uploads via Multer + ImageKit",
       ],
       links: [
-        { label: "LIVE ↗", url: "https://loomboard.codewithkishanx.co.in/" },
-        { label: "CODE ↗", url: "https://github.com/codewithkishanx/STMP-FRONTEND" },
-      ],
-      color: "#00E676",
-      featured: true,
-    },
-    {
-      id: "03",
-      title: "DSA Arcade — Learn DSA by Playing",
-      stack: ["React", "Python", "FastAPI", "Canvas", "PostgreSQL"],
-      description:
-        "A gamified platform that teaches DSA through playable visualizations — sort, search and traverse your way up the leaderboard.",
-      bullets: [
-        "Playable visualizers for sorting, searching, trees & graphs",
-        "XP, levels, streaks and leaderboards to keep the grind fun",
-        "Python (FastAPI) backend serving challenges and test cases",
-      ],
-      links: [
         { label: "LIVE ↗", url: "#" },
         { label: "CODE ↗", url: "#" },
       ],
-      color: "#FF2E9A",
-      featured: false,
-    },
-    {
-      id: "04",
-      title: "Atmos — Live Weather Dashboard",
-      stack: ["JavaScript", "Tailwind CSS", "Open-Meteo API", "Geolocation", "Charts"],
-      description:
-        "Premium weather intelligence with live radar, geolocation auto-detect, dynamic condition backgrounds & 24-hr charts.",
-      bullets: [
-        "3-day forecast + 24-hr temp / precip / wind via Open-Meteo",
-        "Dynamic highlights: sunrise, sunset, UV risk, AQI & visibility",
-        "Geolocation auto-detect with fallback + weather-based gradients",
-      ],
-      links: [
-        { label: "LIVE ↗", url: "https://weather.codewithkishanx.co.in/" },
-      ],
-      color: "#00D0FF",
-      featured: false,
+      color: "#00E676",
+      featured: true,
     },
   ],
 
   education: [
     {
       degree: "MCA — Masters of Computer Application",
-      school: "Galgotias College of Eng. & Tech.",
+      school: "Noida Institute of Engineering and Technology",
       period: "2025 – 27",
-      score: "7.57 CGPA (till 2nd sem)",
+      score: "8.24 CGPA (till 2nd sem)",
       color: "#FFE600",
     },
     {
       degree: "BCA — Bachelor of Computer Application",
       school: "L. N. Mishra Institute",
       period: "2022 – 25",
-      score: "7.47 CGPA",
+      score: "7.72 CGPA",
       color: "#00D0FF",
     },
   ],
 
   achievements: [
-    "Solved 600+ DSA problems on LeetCode",
-    "1650+ Contest Rating — Top 15% globally",
-    "Getting Started with AI — IBM SkillsBuild (Feb 2026)",
+    "Solved 200+ DSA problems on LeetCode",
+    "Getting Started with Artificial Intelligence — IBM SkillsBuild (Feb 2026)",
   ],
 
   contact: {
@@ -178,7 +142,7 @@ export const profile = {
 
   // Life outside the editor (AI-suggested — edit freely)
   hobbies: [
-    { icon: "★", title: "DSA Contests", text: "Weekend LeetCode/CodeChef contests — rating grinding is my cardio." },
+    { icon: "★", title: "DSA Contests", text: "Weekend LeetCode contests — rating grinding is my cardio." },
     { icon: "⇄", title: "Open Source", text: "Fixing bugs and docs in projects I use. Giving back, learning lots." },
     { icon: "✦", title: "AI Experiments", text: "Testing every new AI tool and API, then breaking it in a side project." },
     { icon: "✎", title: "Tech Writing", text: "Turning things I learn into short notes and threads for others." },
