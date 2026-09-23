@@ -1,4 +1,4 @@
-# Kishan Kumar — Portfolio (folio/OS)
+# Prem kishor — Portfolio (folio/OS)
 
 Personal portfolio site. An editor-chrome themed single-page app + a `/projects` archive page.
 
